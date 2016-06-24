@@ -8,9 +8,9 @@
     vars:
       instance_type: t2.micro
       security_group: default # Change the security group name here
-      image: ami-7946ac19 #change the AMI, from which you want to launch the server
+      image: YOUR_AMI_ID #change the AMI, from which you want to launch the server
       region: us-west-2 # Change the Region
-      keypair: key # Change the keypair name
+      keypair: YOUR_KEY # Change the keypair name
       count: 2 
     tasks:
     - name: Launch the new EC2 Instance
