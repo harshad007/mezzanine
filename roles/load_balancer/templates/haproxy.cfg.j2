@@ -1,0 +1,40 @@
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+log 127.0.0.1 syslog emerg
+maxconn 4000
+quiet
+user root
+group root
+daemon
+debug
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+mode {{ mode }}
+log global
+option abortonclose
+option dontlognull
+option httpclose
+option httplog
+option forwardfor
+option redispatch
+timeout connect 40s # default 40 second time out if a backend is not found
+timeout client 300000 # 5 min timeout for client
+timeout server 300000 # 5 min timeout for server
+frontend http_proxy *:80
+mode http
+option forwardfor except 127.0.0.1
+default_backend back
+backend back
+mode http
+balance roundrobin
+option httpchk GET /index.html
+server server1 {{ server1 }}:80 maxconn 15 check inter 10000
+server server2 {{ server2 }}:80 maxconn 15 check inter 10000
+monitor-uri /haproxy_test
+stats enable
+stats uri /stats

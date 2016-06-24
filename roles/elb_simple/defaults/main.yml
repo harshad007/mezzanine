@@ -1,0 +1,6 @@
+# Should per default register an instance to an ELB
+aws_elb_state               : "present"
+aws_elb_region              : "us-west-2"
+aws_elb_ec2_elbs            : "external-load"
+# The EC2 id which should associated with the ELB
+aws_elb_instance_id         : "i-96c2c103"

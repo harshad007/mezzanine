@@ -1,0 +1,14 @@
+---
+- hosts: lb
+  sudo: yes
+  tasks:
+  - name: all all ufw
+    ufw: state=enabled policy=allow
+  - name: install haproxy
+    apt: name=haproxy state=installed
+  - name: enable haproxy
+    lineinfile: dest=/etc/default/haproxy regexp="^ENABLED" line="ENABLED=1"
+    notify: restart haproxy
+  - name: deploy haproxy config
+    template: src=templates/haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
+    notify: restart haproxy

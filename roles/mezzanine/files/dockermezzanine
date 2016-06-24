@@ -1,0 +1,14 @@
+#docker file for mezzanine project
+
+FROM harshad007/mezzanine
+
+EXPOSE 22
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+WORKDIR "/myproject"
+RUN mkdir -p /mezzanine-project/static/media 
+
+CMD sleep 5 && \
+    python manage.py collectstatic && \
+    python manage.py syncdb && \
+    python manage.py migrate && \
+    /usr/bin/supervisord

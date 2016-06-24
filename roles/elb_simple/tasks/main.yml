@@ -1,0 +1,9 @@
+---
+
+- name: register/de-register EC2 instances in ELB
+  ec2_elb:
+    region="{{ aws_elb_region }}"
+    ec2_elbs="{{ aws_elb_ec2_elbs }}"
+    instance_id="{{ aws_elb_instance_id }}"
+    state="{{ aws_elb_state }}"
+    wait=yes

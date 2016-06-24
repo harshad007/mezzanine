@@ -1,0 +1,30 @@
+---
+
+- name: update repository
+  apt: name* state=latest
+
+- name: Install docker.io package
+  apt: name=docker.io state=present
+
+- name: Copy dockerfile on remote node
+  copy: src="~/awsProject/roles/mezzanine/files/dockerMezzanine" dest="/home/ubuntu/dockerMezzanine"
+
+- name: Pull postgres image
+  shell: 'docker pull postgres'
+
+- name: Run docker container named as mezzanine_db from postgres image
+  shell: 'docker build -d --name mezzanine_db postgres'
+
+- name: pull mezzanine image
+  shell: docker run -P -t --name web -p 172.17.0.1:8000:80 --link db:mezzanine_db harshad007/mezzanine
+
+- name: createdb in mezzanine_web container
+  shell: docker exec mezzanine_web python /myproject/manage.py createdb
+  ignore_errors: yes
+
+- name: migratedb in mezzanine_web container
+  shell: docker exec mezzanine_web python /myproject/manage.py migrate
+  ignore_errors: yes
+
+- name: run mezzanine project
+  shell: docker exec mezzanine_web python /manage.py runserver 172.17.0.1:80
