@@ -1,0 +1,13 @@
+---
+- name: install apache
+  apt: name=apache2 state=present
+  
+- name: install mysql server
+  apt: name=mysql-server
+
+- name: install php5-mysql
+  apt: name=php5-mysql state=present
+
+- name: install php apache dependency
+  apt: name=libapache2-mod-php5
+  notify: restart apache
