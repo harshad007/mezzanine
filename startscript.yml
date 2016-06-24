@@ -4,5 +4,3 @@
 
   roles:
     - addec2
-    - load_balancer 
-    - mezzanine
